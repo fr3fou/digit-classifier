@@ -3,6 +3,8 @@ github.com/fr3fou/gone v0.0.0-20200331001902-e353cde1738c h1:HNHnkIS1PaJR5AfHhJk
 github.com/fr3fou/gone v0.0.0-20200331001902-e353cde1738c/go.mod h1:zzGNcGzaZie6bQa6dTJM5qMRj8B8PlQQHAD7yYcRUu4=
 github.com/fr3fou/gone v0.0.0-20200331140250-d9f29ec4378d h1:Hva6/TJA0/rHZLp/KwAz67znvKsrE4u0sVq5E7Y+y28=
 github.com/fr3fou/gone v0.0.0-20200331140250-d9f29ec4378d/go.mod h1:zzGNcGzaZie6bQa6dTJM5qMRj8B8PlQQHAD7yYcRUu4=
+github.com/fr3fou/gone v0.0.0-20200331141610-cd77e7f4f97e h1:gjBiFgdniDpp5NPWX5XtdDPEDK18z7VqDzZckt9lgf8=
+github.com/fr3fou/gone v0.0.0-20200331141610-cd77e7f4f97e/go.mod h1:zzGNcGzaZie6bQa6dTJM5qMRj8B8PlQQHAD7yYcRUu4=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.5.1/go.mod h1:5W2xD1RspED5o8YsWQXVCued0rvSQ+mT+I5cxcmMvtA=
