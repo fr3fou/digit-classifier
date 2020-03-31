@@ -33,7 +33,7 @@ func main() {
 	log.Println("Finished parsing csv...")
 
 	g.Train(
-		gone.MGBD(20),
+		gone.MBGD(20),
 		data,
 		1,
 	)
