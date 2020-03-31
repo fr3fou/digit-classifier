@@ -14,29 +14,35 @@ import (
 
 func main() {
 	g := gone.New(
-		0.01,
+		0.1,
 		gone.Layer{
 			Nodes: 784,
 		},
 		gone.Layer{
 			Nodes:     20,
-			Activator: gone.ReLU(),
+			Activator: gone.Sigmoid(),
 		},
 		gone.Layer{
-			Nodes:     10,
-			Activator: gone.Sigmoid(), // TODO: Softmax
+			Nodes: 10,
+			// Activator: gone.Sigmoid(), // TODO: Softmax
 		},
 	)
+	g.ToggleDebug(true)
 
-	log.Println("Parsing  csv...")
-	data := parse("test.csv")
+	log.Println("Parsing csv...")
+	data := parse("train.csv")
 	log.Println("Finished parsing csv...")
 
+	log.Println("Beginning training ...")
 	g.Train(
-		gone.MBGD(20),
+		gone.SGD(),
 		data,
-		1,
+		10,
 	)
+	log.Println("Finished training ...")
+
+	log.Println("Writing out.csv...")
+	test("test.csv", "out.csv", g)
 }
 
 func test(testName string, outputName string, n *gone.NeuralNetwork) {
@@ -44,18 +50,20 @@ func test(testName string, outputName string, n *gone.NeuralNetwork) {
 	if err != nil {
 		panic(err)
 	}
+	defer testFile.Close()
 
 	outputFile, err := os.Create(outputName)
 	if err != nil {
 		panic(err)
 	}
+	defer outputFile.Close()
 
 	isHeader := true
 	reader := csv.NewReader(bufio.NewReader(testFile))
 
 	id := 1
 
-	outputFile.WriteString("ImageId,Label")
+	outputFile.WriteString("ImageId,Label\n")
 	for {
 		line, err := reader.Read()
 		if err == io.EOF {
@@ -71,17 +79,17 @@ func test(testName string, outputName string, n *gone.NeuralNetwork) {
 		}
 
 		pixels := []float64{}
-		for i := 1; i < len(line); i++ {
+		for i := 0; i < len(line); i++ {
 			pixel, err := strconv.ParseFloat(line[i], 64)
 			if err != nil {
 				log.Println(err)
 				continue
 			}
-			pixels = append(pixels, pixel)
+			pixels = append(pixels, pixel/255)
 		}
 
 		labels := n.Predict(pixels)
-		bestScore := -1.0
+		bestScore := 0.0
 		bestDigit := 0.0
 		for digit, score := range labels {
 			if score > bestScore {
@@ -90,7 +98,7 @@ func test(testName string, outputName string, n *gone.NeuralNetwork) {
 			}
 		}
 
-		outputFile.WriteString(fmt.Sprintf("%d,%d\n", int(id), int(bestDigit)))
+		outputFile.WriteString(fmt.Sprintf("%d,%d\n", id, int(bestDigit)))
 		id++
 	}
 }
@@ -102,6 +110,7 @@ func parse(file string) gone.DataSet {
 	if err != nil {
 		panic(err)
 	}
+	defer csvFile.Close()
 
 	isHeader := true
 	reader := csv.NewReader(bufio.NewReader(csvFile))
@@ -135,17 +144,13 @@ func parse(file string) gone.DataSet {
 				log.Println(err)
 				continue
 			}
-			pixels = append(pixels, pixel)
+			pixels = append(pixels, pixel/255)
 		}
 
 		data = append(data, gone.DataSample{
 			Inputs:  pixels,
 			Targets: labels[:],
 		})
-	}
-
-	if err := csvFile.Close(); err != nil {
-		panic(err)
 	}
 
 	return data
