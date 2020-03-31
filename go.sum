@@ -1,3 +1,4 @@
+github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/fr3fou/gone v0.0.0-20200331001902-e353cde1738c h1:HNHnkIS1PaJR5AfHhJkJxEctrGbeTMY6a89kBorh99s=
 github.com/fr3fou/gone v0.0.0-20200331001902-e353cde1738c/go.mod h1:zzGNcGzaZie6bQa6dTJM5qMRj8B8PlQQHAD7yYcRUu4=
@@ -5,6 +6,8 @@ github.com/fr3fou/gone v0.0.0-20200331140250-d9f29ec4378d h1:Hva6/TJA0/rHZLp/KwA
 github.com/fr3fou/gone v0.0.0-20200331140250-d9f29ec4378d/go.mod h1:zzGNcGzaZie6bQa6dTJM5qMRj8B8PlQQHAD7yYcRUu4=
 github.com/fr3fou/gone v0.0.0-20200331141610-cd77e7f4f97e h1:gjBiFgdniDpp5NPWX5XtdDPEDK18z7VqDzZckt9lgf8=
 github.com/fr3fou/gone v0.0.0-20200331141610-cd77e7f4f97e/go.mod h1:zzGNcGzaZie6bQa6dTJM5qMRj8B8PlQQHAD7yYcRUu4=
+github.com/fr3fou/gone v0.0.0-20200331144637-29957909acce h1:+Qp6BmQQuXGhM5kA4/CYW4mSKlwo1WJtz7+Lve2ZDnw=
+github.com/fr3fou/gone v0.0.0-20200331144637-29957909acce/go.mod h1:zzGNcGzaZie6bQa6dTJM5qMRj8B8PlQQHAD7yYcRUu4=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.5.1/go.mod h1:5W2xD1RspED5o8YsWQXVCued0rvSQ+mT+I5cxcmMvtA=

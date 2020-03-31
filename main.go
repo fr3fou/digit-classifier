@@ -14,16 +14,11 @@ import (
 func main() {
 	g := gone.New(
 		0.01,
-		gone.MGBD(20),
 		gone.Layer{
 			Nodes: 784,
 		},
 		gone.Layer{
-			Nodes:     16,
-			Activator: gone.ReLU(),
-		},
-		gone.Layer{
-			Nodes:     16,
+			Nodes:     20,
 			Activator: gone.ReLU(),
 		},
 		gone.Layer{
@@ -39,6 +34,7 @@ func main() {
 		panic(err)
 	}
 
+	log.Println("Parsing  csv...")
 	isHeader := true
 	reader := csv.NewReader(bufio.NewReader(csvFile))
 	for {
@@ -79,10 +75,15 @@ func main() {
 			Targets: labels[:],
 		})
 	}
+	log.Println("Finished parsing csv...")
 
 	if err := csvFile.Close(); err != nil {
 		panic(err)
 	}
 
-	g.Train(data, 10)
+	g.Train(
+		gone.MGBD(20),
+		data,
+		1,
+	)
 }
