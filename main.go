@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"encoding/csv"
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -27,14 +28,81 @@ func main() {
 		},
 	)
 
-	data := gone.DataSet{}
+	log.Println("Parsing  csv...")
+	data := parse("test.csv")
+	log.Println("Finished parsing csv...")
 
-	csvFile, err := os.Open("train.csv")
+	g.Train(
+		gone.MGBD(20),
+		data,
+		1,
+	)
+}
+
+func test(testName string, outputName string, n *gone.NeuralNetwork) {
+	testFile, err := os.Open(testName)
 	if err != nil {
 		panic(err)
 	}
 
-	log.Println("Parsing  csv...")
+	outputFile, err := os.Create(outputName)
+	if err != nil {
+		panic(err)
+	}
+
+	isHeader := true
+	reader := csv.NewReader(bufio.NewReader(testFile))
+
+	id := 1
+
+	outputFile.WriteString("ImageId,Label")
+	for {
+		line, err := reader.Read()
+		if err == io.EOF {
+			break
+		} else if err != nil {
+			log.Fatal(err)
+		}
+
+		// Skip the header
+		if isHeader {
+			isHeader = false
+			continue
+		}
+
+		pixels := []float64{}
+		for i := 1; i < len(line); i++ {
+			pixel, err := strconv.ParseFloat(line[i], 64)
+			if err != nil {
+				log.Println(err)
+				continue
+			}
+			pixels = append(pixels, pixel)
+		}
+
+		labels := n.Predict(pixels)
+		bestScore := -1.0
+		bestDigit := 0.0
+		for digit, score := range labels {
+			if score > bestScore {
+				bestScore = score
+				bestDigit = float64(digit)
+			}
+		}
+
+		outputFile.WriteString(fmt.Sprintf("%d,%d\n", int(id), int(bestDigit)))
+		id++
+	}
+}
+
+func parse(file string) gone.DataSet {
+	data := gone.DataSet{}
+
+	csvFile, err := os.Open(file)
+	if err != nil {
+		panic(err)
+	}
+
 	isHeader := true
 	reader := csv.NewReader(bufio.NewReader(csvFile))
 	for {
@@ -75,15 +143,10 @@ func main() {
 			Targets: labels[:],
 		})
 	}
-	log.Println("Finished parsing csv...")
 
 	if err := csvFile.Close(); err != nil {
 		panic(err)
 	}
 
-	g.Train(
-		gone.MGBD(20),
-		data,
-		1,
-	)
+	return data
 }
