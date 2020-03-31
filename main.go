@@ -39,9 +39,9 @@ func main() {
 
 	log.Println("Beginning training ...")
 	g.Train(
-		gone.MBGD(20),
+		gone.SGD(),
 		data,
-		32,
+		10,
 	)
 	log.Println("Finished training ...")
 
