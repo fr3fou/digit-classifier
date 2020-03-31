@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/fr3fou/gone/gone"
 )
@@ -19,12 +20,8 @@ func main() {
 			Nodes: 784,
 		},
 		gone.Layer{
-			Nodes:     16,
-			Activator: gone.Sigmoid(),
-		},
-		gone.Layer{
-			Nodes:     16,
-			Activator: gone.Sigmoid(),
+			Nodes:     20,
+			Activator: gone.ReLU(),
 		},
 		gone.Layer{
 			Nodes: 10,
@@ -45,8 +42,11 @@ func main() {
 	)
 	log.Println("Finished training ...")
 
+	t := strconv.FormatInt(time.Now().Unix(), 10)
+	g.Save("digit-" + t + ".gone")
+
 	log.Println("Writing out.csv...")
-	test("test.csv", "out.csv", g)
+	test("test.csv", "out-"+t+".csv", g)
 }
 
 func test(testName string, outputName string, n *gone.NeuralNetwork) {
