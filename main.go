@@ -14,7 +14,7 @@ import (
 func main() {
 	g := gone.New(
 		0.01,
-		gone.SGD(),
+		gone.MGBD(20),
 		gone.Layer{
 			Nodes: 784,
 		},
@@ -79,4 +79,10 @@ func main() {
 			Targets: labels[:],
 		})
 	}
+
+	if err := csvFile.Close(); err != nil {
+		panic(err)
+	}
+
+	g.Train(data, 10)
 }
