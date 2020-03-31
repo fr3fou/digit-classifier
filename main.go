@@ -11,13 +11,8 @@ import (
 	"github.com/fr3fou/gone/gone"
 )
 
-type Digit struct {
-	Pixels []float64
-	Label  float64
-}
-
 func main() {
-	gone.New(
+	g := gone.New(
 		0.01,
 		gone.SGD(),
 		gone.Layer{
@@ -37,7 +32,7 @@ func main() {
 		},
 	)
 
-	digits := []Digit{}
+	data := gone.DataSet{}
 
 	csvFile, err := os.Open("train.csv")
 	if err != nil {
@@ -66,6 +61,9 @@ func main() {
 			continue
 		}
 
+		labels := [10]float64{}
+		labels[int(label)] = 1.0 // set only the correct label to 1.0 and keep the rest at 0.0
+
 		pixels := []float64{}
 		for i := 1; i < len(line); i++ {
 			pixel, err := strconv.ParseFloat(line[i], 64)
@@ -76,9 +74,9 @@ func main() {
 			pixels = append(pixels, pixel)
 		}
 
-		digits = append(digits, Digit{
-			Label:  label,
-			Pixels: pixels,
+		data = append(data, gone.DataSample{
+			Inputs:  pixels,
+			Targets: labels[:],
 		})
 	}
 }
