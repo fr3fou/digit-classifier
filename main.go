@@ -21,7 +21,15 @@ func main() {
 		},
 		gone.Layer{
 			Nodes:     20,
-			Activator: gone.ReLU(),
+			Activator: gone.Sigmoid(),
+		},
+		gone.Layer{
+			Nodes:     20,
+			Activator: gone.Sigmoid(),
+		},
+		gone.Layer{
+			Nodes:     20,
+			Activator: gone.Sigmoid(),
 		},
 		gone.Layer{
 			Nodes: 10,
