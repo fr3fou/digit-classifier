@@ -42,7 +42,7 @@ func main() {
 	g.Train(
 		gone.SGD(),
 		data,
-		100,
+		50,
 	)
 	log.Println("Finished training ...")
 
