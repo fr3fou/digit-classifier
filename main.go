@@ -28,10 +28,6 @@ func main() {
 			Activator: gone.Sigmoid(),
 		},
 		gone.Layer{
-			Nodes:     20,
-			Activator: gone.Sigmoid(),
-		},
-		gone.Layer{
 			Nodes: 10,
 			// Activator: gone.Sigmoid(), // TODO: Softmax
 		},
@@ -46,7 +42,7 @@ func main() {
 	g.Train(
 		gone.SGD(),
 		data,
-		10,
+		100,
 	)
 	log.Println("Finished training ...")
 
