@@ -20,11 +20,11 @@ func main() {
 			Nodes: 784,
 		},
 		gone.Layer{
-			Nodes:     20,
+			Nodes:     40,
 			Activator: gone.Sigmoid(),
 		},
 		gone.Layer{
-			Nodes:     20,
+			Nodes:     40,
 			Activator: gone.Sigmoid(),
 		},
 		gone.Layer{
@@ -42,7 +42,7 @@ func main() {
 	g.Train(
 		gone.SGD(),
 		data,
-		50,
+		30,
 	)
 	log.Println("Finished training ...")
 
@@ -98,15 +98,15 @@ func test(testName string, outputName string, n *gone.NeuralNetwork) {
 
 		labels := n.Predict(pixels)
 		bestScore := 0.0
-		bestDigit := 0.0
+		bestDigit := 0
 		for digit, score := range labels {
 			if score > bestScore {
 				bestScore = score
-				bestDigit = float64(digit)
+				bestDigit = digit
 			}
 		}
 
-		outputFile.WriteString(fmt.Sprintf("%d,%d\n", id, int(bestDigit)))
+		outputFile.WriteString(fmt.Sprintf("%d,%d\n", id, bestDigit))
 		id++
 	}
 }
