@@ -20,11 +20,11 @@ func main() {
 			Nodes: 784,
 		},
 		gone.Layer{
-			Nodes:     40,
+			Nodes:     50,
 			Activator: gone.Sigmoid(),
 		},
 		gone.Layer{
-			Nodes:     40,
+			Nodes:     50,
 			Activator: gone.Sigmoid(),
 		},
 		gone.Layer{
@@ -42,7 +42,7 @@ func main() {
 	g.Train(
 		gone.SGD(),
 		data,
-		30,
+		50,
 	)
 	log.Println("Finished training ...")
 
