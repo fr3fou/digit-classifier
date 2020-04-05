@@ -16,6 +16,7 @@ import (
 func main() {
 	g := gone.New(
 		0.1,
+		gone.MSE(),
 		gone.Layer{
 			Nodes: 784,
 		},
@@ -32,7 +33,7 @@ func main() {
 			// Activator: gone.Sigmoid(), // TODO: Softmax
 		},
 	)
-	g.ToggleDebug(true)
+	g.SetDebugMode(true)
 
 	log.Println("Parsing csv...")
 	data := parse("train.csv")
