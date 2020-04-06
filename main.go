@@ -4,16 +4,33 @@ import (
 	"bufio"
 	"encoding/csv"
 	"fmt"
+	"image"
 	"io"
 	"log"
+	"net/http"
 	"os"
 	"strconv"
 	"time"
+
+	_ "image/png"
 
 	"github.com/fr3fou/gone/gone"
 )
 
 func main() {
+	g, err := gone.Load("95%.gone")
+	if err != nil {
+		panic(err)
+	}
+
+	w := NewWeb(g)
+	log.Println("listening on port :8080")
+	if err := http.ListenAndServe(":8080", w); err != nil {
+		panic(err)
+	}
+}
+
+func _main() {
 	g := gone.New(
 		0.1,
 		gone.MSE(),
@@ -21,11 +38,11 @@ func main() {
 			Nodes: 784,
 		},
 		gone.Layer{
-			Nodes:     50,
+			Nodes:     20,
 			Activator: gone.Sigmoid(),
 		},
 		gone.Layer{
-			Nodes:     50,
+			Nodes:     20,
 			Activator: gone.Sigmoid(),
 		},
 		gone.Layer{
@@ -43,7 +60,7 @@ func main() {
 	g.Train(
 		gone.SGD(),
 		data,
-		50,
+		10,
 	)
 	log.Println("Finished training ...")
 
@@ -52,6 +69,38 @@ func main() {
 
 	log.Println("Writing out.csv...")
 	test("test.csv", "out-"+t+".csv", g)
+
+}
+
+func loadImage(imageName string) ([]float64, error) {
+	file, err := os.Open(imageName)
+	if err != nil {
+		return nil, err
+	}
+
+	return imageToBytes(file)
+
+}
+
+func imageToBytes(r io.Reader) ([]float64, error) {
+	img, _, err := image.Decode(r)
+	if err != nil {
+		return nil, err
+	}
+
+	// Converting image to grayscale
+	grayImg := image.NewGray(img.Bounds())
+	for y := img.Bounds().Min.Y; y < img.Bounds().Max.Y; y++ {
+		for x := img.Bounds().Min.X; x < img.Bounds().Max.X; x++ {
+			grayImg.Set(x, y, img.At(x, y))
+		}
+	}
+
+	v := []float64{}
+	for _, pixel := range grayImg.Pix {
+		v = append(v, float64(pixel))
+	}
+	return v, nil
 }
 
 func test(testName string, outputName string, n *gone.NeuralNetwork) {
@@ -98,14 +147,7 @@ func test(testName string, outputName string, n *gone.NeuralNetwork) {
 		}
 
 		labels := n.Predict(pixels)
-		bestScore := 0.0
-		bestDigit := 0
-		for digit, score := range labels {
-			if score > bestScore {
-				bestScore = score
-				bestDigit = digit
-			}
-		}
+		bestDigit := squash(labels)
 
 		outputFile.WriteString(fmt.Sprintf("%d,%d\n", id, bestDigit))
 		id++
@@ -163,4 +205,17 @@ func parse(file string) gone.DataSet {
 	}
 
 	return data
+}
+
+func squash(predictions []float64) int {
+	bestScore := 0.0
+	bestDigit := 0
+	for digit, score := range predictions {
+		if score > bestScore {
+			bestScore = score
+			bestDigit = digit
+		}
+	}
+
+	return bestDigit
 }
