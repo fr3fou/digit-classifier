@@ -98,7 +98,7 @@ func imageToBytes(r io.Reader) ([]float64, error) {
 
 	v := []float64{}
 	for _, pixel := range grayImg.Pix {
-		v = append(v, float64(pixel))
+		v = append(v, float64(pixel/255))
 	}
 	return v, nil
 }
